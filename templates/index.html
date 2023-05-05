@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Web Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Reset default styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        /* Set body background color and font family */
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        /* Center the container div vertically and horizontally */
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Add a margin and padding to the form element */
+        form {
+            margin: 20px;
+			width: 60%;
+			height: 540px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        /* Add a margin and padding to the textarea element */
+        textarea {
+            width: 95%;
+			height: 400px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: none;
+            resize: vertical;
+        }
+        /* Add a margin and padding to the select element */
+        select {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #f2f2f2;
+        }
+        /* Add styles to the submit button */
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        /* Change the background color of the button on hover */
+        button[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        /* Add styles to the output div */
+        #output {
+			margin-top: 20px;
+            margin-left: 10%;
+			margin-right: 10%;
+			margin-bottom: 10%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+           
+        }
+    </style>
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="myform">
+            <textarea class="textarea" name="textarea" placeholder="Enter your job describtion"></textarea>
+            <!-- <label for="selectbox">Select model:</label> -->
+			<select class="selectbox" name="selectbox">
+                <option value="option1" disabled>Select model</option>
+                {%for m in MODEL_NAMES%}
+                <option value="{{m}}">{{m}}</option>
+                {%endfor%}
+            </select>
+            <button class="submit-button" type="submit">Submit</button>
+        </form>
+        <div class="output" id="output">
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myform').submit(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: '/',
+                    type: 'POST',
+                    data: $('#myform').serialize(),
+                    success: function(response) {
+                        $('#output').html(response['result']);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
